@@ -51,7 +51,6 @@ def var_amb(alphas: np.ndarray, modified: bool = False):
         var_qcs = alphas_cs * b_0 / (
             (a_0 + 1) * a_0 ** 2
         )
-        # cov = var_qcs * (1 - (a_0 * exp_amb - alphas_cs) / b_0)
         cov = alphas_cs / (a_0 * (a_0 + 1)) * (1 - exp_amb)
         var = 1 / (num_classes - 1) ** 2 * (
             num_classes ** 2 * var
