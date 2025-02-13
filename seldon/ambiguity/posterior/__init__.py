@@ -1,0 +1,2 @@
+from seldon.ambiguity.posterior.new_ambiguity import NewAmbiguityPosterior, ModifiedNewAmbiguityPosterior
+from seldon.ambiguity.posterior.old_ambiguity import AmbiguityPosterior
