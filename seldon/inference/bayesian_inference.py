@@ -63,7 +63,6 @@ class Posterior(abc.ABC):
 
     def mode(self, repeats: int, *args, **kwargs) -> np.ndarray:
         values = self.sample(repeats=repeats, keep_p=False)
-        # TODO: just dummy implementation for now
         return bin_values(values, *args, **kwargs).mode
 
 
