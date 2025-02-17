@@ -66,7 +66,6 @@ class Posterior(abc.ABC):
         return bin_values(values, *args, **kwargs).mode
 
 
-
 class BayesianInference:
 
     class RequiresFitException(Exception):

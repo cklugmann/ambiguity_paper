@@ -20,7 +20,7 @@ def linear_cant_solve_scaling(p_cs: np.ndarray, *args, **kwargs) -> np.ndarray:
 def base_disambiguity(p: np.ndarray, eps: float) -> np.ndarray:
     # Re-normalize p's
     p_proper = p[..., :-1]
-    _, num_proper_classes = p_proper.shape
+    *_, num_proper_classes = p_proper.shape
     p_proper_normalized = p_proper / np.maximum(
         p_proper.sum(axis=-1, keepdims=True), 1e-4
     )
