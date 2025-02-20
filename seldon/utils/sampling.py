@@ -71,14 +71,13 @@ def repeated_dirichlet_draws(alphas: np.ndarray, repeats: int) -> np.ndarray:
     if len(alphas.shape) == 1:
         alphas = alphas.reshape(1, -1)
         is_vector = True
-    num_objects, *_ = alphas.shape
     ps = dirichlet_mvs(
         alphas=np.repeat(
-            alphas,
+            np.expand_dims(alphas, axis=-2),
             repeats=repeats,
-            axis=0
+            axis=-2
         )
-    ).reshape(num_objects, repeats, -1)
+    )
     if is_vector:
         ps = np.squeeze(ps, axis=0)
     return ps
