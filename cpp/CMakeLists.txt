@@ -23,3 +23,8 @@ endif()
 
 pybind11_add_module(amb_pdf bindings.cpp)
 target_link_libraries(amb_pdf PRIVATE amb_pdf_native)
+
+set_target_properties(amb_pdf PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/../seldon"
+)
+
