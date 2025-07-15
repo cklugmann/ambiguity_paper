@@ -26,7 +26,7 @@ static void xi_and_dxi_da(double a, double u, AmbiguityType type,
         double arg  = (1 - a) / denom;
         double root = std::sqrt(arg);
         xi       = 0.5 * (1 - root);
-        dxi_da   = 1.0 / (2 * denom * root);
+        dxi_da   = 1.0 / (4 * denom * root);
     }
 }
 
