@@ -1,7 +1,9 @@
 import numpy as np
+import numpy.typing
 
 from seldon.inference import Posterior
 from seldon.ambiguity.new_ambiguity import new_ambiguity, modified_new_ambiguity
+from seldon.amb_pdf import pdf_batch, AmbiguityType
 
 
 __all__ = [
@@ -71,6 +73,11 @@ class NewAmbiguityPosterior(Posterior):
     def var(self, *args, **kwargs) -> np.ndarray:
         return var_amb(alphas=self.alphas, modified=False)
 
+    def pdf(self, x: numpy.typing.ArrayLike) -> list[float]:
+        if len(alphas := self.alphas.tolist()) != 3:
+            raise NotImplementedError("Explicit pdf can only be computed for C+1=3 categories.")
+        return pdf_batch(x, *alphas, type=AmbiguityType.Standard)
+
 
 class ModifiedNewAmbiguityPosterior(Posterior):
 
@@ -82,4 +89,9 @@ class ModifiedNewAmbiguityPosterior(Posterior):
 
     def var(self, *args, **kwargs) -> np.ndarray:
         return var_amb(alphas=self.alphas, modified=True)
+
+    def pdf(self, x: numpy.typing.ArrayLike) -> list[float]:
+        if len(alphas := self.alphas.tolist()) != 3:
+            raise NotImplementedError("Explicit pdf can only be computed for C+1=3 categories.")
+        return pdf_batch(x, *alphas, type=AmbiguityType.Modified)
 

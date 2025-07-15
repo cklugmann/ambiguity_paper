@@ -2,6 +2,7 @@ import abc
 from typing import Type
 
 import numpy as np
+import numpy.typing
 from sklearn.utils import Bunch
 
 import seldon.utils.sampling as sampling_utils
@@ -64,6 +65,9 @@ class Posterior(abc.ABC):
     def mode(self, repeats: int, *args, **kwargs) -> np.ndarray:
         values = self.sample(repeats=repeats, keep_p=False)
         return bin_values(values, *args, **kwargs).mode
+
+    def pdf(self, x: numpy.typing.ArrayLike) -> list[float]:
+        raise NotImplementedError("Can not compute analytic pdf!")
 
 
 class BayesianInference:
