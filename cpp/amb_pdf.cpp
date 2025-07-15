@@ -5,7 +5,7 @@
 #include <functional>
 
 #ifdef _OPENMP
-#  include <omp.h>
+#include <omp.h>
 #endif
 
 static double beta_density(double a, double b, double x) {
@@ -20,20 +20,17 @@ static void xi_and_dxi_da(double a, double u, AmbiguityType type,
     if (type == AmbiguityType::Standard) {
         double arg  = 2 * (1 - a) / denom - 1;
         double root = std::sqrt(arg);
-        xi       = 0.5 * (1 - root);
-        dxi_da   = 1.0 / (2 * denom * root);
+        xi = 0.5 * (1 - root);
+        dxi_da = 1.0 / (2 * denom * root);
     } else {
         double arg  = (1 - a) / denom;
         double root = std::sqrt(arg);
-        xi       = 0.5 * (1 - root);
-        dxi_da   = 1.0 / (4 * denom * root);
+        xi = 0.5 * (1 - root);
+        dxi_da = 1.0 / (4 * denom * root);
     }
 }
 
-static double h_func(double a, double u, AmbiguityType type) {
-    const double gamma = 1.0;
-    const double alpha = 2.0;
-    const double beta  = 3.0;
+static double h_func(double a, double u, AmbiguityType type, double alpha, double beta, double gamma) {
 
     double u0 = (type == AmbiguityType::Standard ? std::max(0.0, 2 * a - 1) : 0.0);
     if (u <= u0 || u >= a) return 0.0;
@@ -71,12 +68,12 @@ static double adaptive_simpson_rec(const std::function<double(double)>& f,
          + adaptive_simpson_rec(f, xm, x1, eps / 2, Sr, fm, f1, fr, depth + 1);
 }
 
-double integrate_amb_pdf(double a, AmbiguityType type, double tol) {
+double integrate_amb_pdf(double a, double alpha, double beta, double gamma, AmbiguityType type, double tol) {
     if (a <= 0.0 || a >= 1.0)
         throw std::domain_error("Parameter 'a' must lie in (0,1)");
 
     double u0 = (type == AmbiguityType::Standard ? std::max(0.0, 2 * a - 1) : 0.0);
-    auto f = [&](double u) { return h_func(a, u, type); };
+    auto f = [&](double u) { return h_func(a, u, type, alpha, beta, gamma); };
 
     double f0 = f(u0);
     double f1 = f(a);
@@ -88,11 +85,12 @@ double integrate_amb_pdf(double a, AmbiguityType type, double tol) {
 
 void integrate_amb_pdf_batch(const std::vector<double>& a_vals,
                              std::vector<double>& results,
+                             double alpha, double beta, double gamma,
                              AmbiguityType type, double tol) {
     results.resize(a_vals.size());
 #ifdef _OPENMP
     #pragma omp parallel for
 #endif
     for (size_t i = 0; i < a_vals.size(); ++i)
-        results[i] = integrate_amb_pdf(a_vals[i], type, tol);
+        results[i] = integrate_amb_pdf(a_vals[i], alpha, beta, gamma, type, tol);
 }
