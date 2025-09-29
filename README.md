@@ -1,7 +1,7 @@
 # seldon
 
 **seldon** provides ambiguity measures over discrete label distributions and tools for estimating and inferring such distributions from crowdsourced data.  
-This package accompanies the paper _[TODO]_.
+This package accompanies the paper *Quantifying Ambiguity in Categorical Annotations: A Measure and Statistical Inference Framework*.
 
 ---
 
