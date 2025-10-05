@@ -58,14 +58,3 @@ cpp/            # C++ code for amb_pdf module (compiled via pybind11)
 notebooks/      # Interactive experiments and demonstrations
 pyproject.toml  # Build + dependency configuration
 ```
-
----
-
-## 🛠 Development Notes
-
-The `amb_pdf` C++ module is compiled automatically when running `pip install`.  
-The resulting `.so` file is placed inside the `seldon/` module and can be imported like a regular Python module:
-
-```python
-from seldon import amb_pdf
-```
